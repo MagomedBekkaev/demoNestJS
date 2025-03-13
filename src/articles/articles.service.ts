@@ -1,38 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ArticlesService {
-  private articles = [];
 
-  getAllArticles() {
-    return this.articles;
-  }
+    constructor(private prisma: PrismaService) {}
 
-  getArticle(id: number) {
-    return this.articles.find((article) => article.id === id);
-  }
-
-  addArticle(article: { title: string; content: string }) {
-    this.articles.push({ id: Date.now(), ...article });
-    return { message: 'Article ajouté avec succès' };
-  }
-
-  // Exemple de fonction de modification
-  editArticle(id: number, updatedData: { title?: string; content?: string }) {
-    const articleIndex = this.articles.findIndex((a) => a.id === id);
-    if (articleIndex !== -1) {
-      this.articles[articleIndex] = {
-        ...this.articles[articleIndex],
-        ...updatedData,
-      };
-      return { message: 'Article modifié avec succès' };
+    async getAllArticles() {
+        return this.prisma.article.findMany();
     }
-    return { message: 'Article introuvable' };
-  }
 
-  // Exemple de fonction de suppression
-  deleteArticle(id: number) {
-    this.articles = this.articles.filter((a) => a.id !== id);
-    return { message: 'Article supprimé avec succès' };
-  }
+    async getArticle(id: number) {
+        return this.prisma.article.findUnique({
+        where: { id },
+        });
+    }
+
+    async addArticle(article: { title: string; content: string }) {
+        return this.prisma.article.create({
+        data: article,
+        });
+    }
+
+    async editArticle(id: number, updatedData: { title?: string; content?: string }) {
+        return this.prisma.article.update({
+        where: { id },
+        data: updatedData,
+        });
+    }
+
+    async deleteArticle(id: number) {
+        return this.prisma.article.delete({
+        where: { id },
+        });
+    }
 }

@@ -6,9 +6,15 @@ interface Article {
     title: string;
 }
 
+
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
+
+  @Post()
+  addArticle(@Body() createarticleDto: CreateArticleDto) {
+    return this.articlesService.addArticle(createarticleDto);
+  }
 
   @Get()
   getAllArticles() {
@@ -16,25 +22,18 @@ export class ArticlesController {
   }
 
   @Get(':id')
-  getArticle(@Param('id') id: number) {
-    return this.articlesService.getArticle(id);
-  }
-
-  @Post()
-  addArticle(@Body() article: { title: string; content: string }) {
-    return this.articlesService.addArticle(article);
+  getArticle(@Param('id') id: string) {
+    return this.articlesService.getArticle(+id);
   }
 
   @Patch(':id')
-  editArticle(
-    @Param('id') id: number,
-    @Body() updatedData: { title?: string; content?: string },
-  ) {
-    return this.articlesService.editArticle(id, updatedData);
+  editArticle(@Param('id') id: string, @Body() updatearticleDto: UpdateArticleDto) {
+    return this.articlesService.editArticle(+id, updatearticleDto);
   }
 
   @Delete(':id')
-  deleteArticle(@Param('id') id: number) {
-    return this.articlesService.deleteArticle(id);
+  deleteArticle(@Param('id') id: string) {
+    return this.articlesService.deleteArticle(+id);
   }
 }
+
