@@ -13,8 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Author {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  articles Article[] // Relation : un auteur a plusieurs articles
+}
+
 model Article {
-  id      Int      @id @default(autoincrement())
-  title   String
-  content String
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int      // Clé étrangère
+  author    Author   @relation(fields: [authorId], references: [id]) // Relation avec Author
 }
