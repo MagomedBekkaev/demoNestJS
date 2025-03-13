@@ -4,16 +4,16 @@ import { ArticlesService } from './articles.service';
 interface Article {
     id: number;
     title: string;
+    content: string;
 }
-
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
-  addArticle(@Body() createarticleDto: CreateArticleDto) {
-    return this.articlesService.addArticle(createarticleDto);
+  addArticle(@Body() article: { title: string; content: string }) {
+    return this.articlesService.addArticle(article);
   }
 
   @Get()
@@ -27,8 +27,8 @@ export class ArticlesController {
   }
 
   @Patch(':id')
-  editArticle(@Param('id') id: string, @Body() updatearticleDto: UpdateArticleDto) {
-    return this.articlesService.editArticle(+id, updatearticleDto);
+  editArticle(@Param('id') id: string, @Body() updatedData: { title?: string; content?: string }) {
+    return this.articlesService.editArticle(+id, updatedData);
   }
 
   @Delete(':id')
@@ -36,4 +36,3 @@ export class ArticlesController {
     return this.articlesService.deleteArticle(+id);
   }
 }
-
