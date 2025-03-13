@@ -16,9 +16,15 @@ export class ArticlesService {
         });
     }
 
-    async addArticle(article: { title: string; content: string }) {
+    async addArticle(article: { title: string; content: string; authorId: number }) {
         return this.prisma.article.create({
-        data: article,
+        data: {
+            title: article.title,
+            content: article.content,
+            author: {
+                connect: { id: article.authorId }
+            }
+        },
         });
     }
 

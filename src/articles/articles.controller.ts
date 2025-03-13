@@ -6,7 +6,7 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
-  addArticle(@Body() article: { title: string; content: string }) {
+  addArticle(@Body() article: { title: string; content: string; authorId: number }) {
     return this.articlesService.addArticle(article);
   }
 

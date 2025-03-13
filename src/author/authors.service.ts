@@ -16,13 +16,16 @@ export class AuthorsService {
         });
     }
 
-    async addAuthor(author: { title: string; content: string }) {
+    async addAuthor(author: { name: string; email: string }) {
         return this.prisma.author.create({
-        data: author,
+        data: {
+            name: author.name,
+            email: author.email,
+        },
         });
     }
 
-    async editAuthor(id: number, updatedData: { title?: string; content?: string }) {
+    async editAuthor(id: number, updatedData: { name?: string; email?: string }) {
         return this.prisma.author.update({
         where: { id },
         data: updatedData,

@@ -6,7 +6,7 @@ export class AuthorsController {
       constructor(private readonly authorsService: AuthorsService) {}
     
       @Post()
-      addAuthor(@Body() author: { title: string; content: string }) {
+      addAuthor(@Body() author: { name: string; email: string }) {
         return this.authorsService.addAuthor(author);
       }
     
@@ -21,7 +21,7 @@ export class AuthorsController {
       }
     
       @Patch(':id')
-      editAuthor(@Param('id') id: string, @Body() updatedData: { title?: string; content?: string }) {
+      editAuthor(@Param('id') id: string, @Body() updatedData: { name?: string; email?: string }) {
         return this.authorsService.editAuthor(+id, updatedData);
       }
     
@@ -29,5 +29,4 @@ export class AuthorsController {
       deleteAuthor(@Param('id') id: string) {
         return this.authorsService.deleteAuthor(+id);
       }
-
 }
